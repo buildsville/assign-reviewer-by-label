@@ -1,5 +1,8 @@
 name: 'Assign reviewer by label'
 description: 'assign and remove reviewer when specified labels applied'
+branding:
+  icon: 'users'  
+  color: 'yellow'
 inputs:
   token:
     description: 'github token or personal access token'
