@@ -69,11 +69,11 @@ function getLabels() {
 }
 function assignable(needLabel, currentLabel) {
     var filterdLabel = needLabel.filter(function (label) { return currentLabel.indexOf(label) != -1; });
-    if (filterdLabel.length == 0) {
-        return false;
+    if (filterdLabel.length == needLabel.length) {
+        return true;
     }
     else {
-        return true;
+        return false;
     }
 }
 function assginReviewers(conf) {

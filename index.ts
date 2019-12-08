@@ -62,10 +62,10 @@ function assignable(needLabel:Labels,currentLabel:Labels):boolean {
     let filterdLabel: Labels = needLabel.filter(
         label => currentLabel.indexOf(label) != -1
     )
-    if ( filterdLabel.length == 0 ){
-        return false
-    } else {
+    if ( filterdLabel.length == needLabel.length ){
         return true
+    } else {
+        return false
     }
 }
 
