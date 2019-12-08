@@ -1,0 +1,33 @@
+name: assign reviewer by labels
+on:
+  pull_request:
+    types:
+      - unlabeled
+      - labeled
+
+jobs:
+  assign_and_remove_job:
+    runs-on: ubuntu-latest
+    name: assign and remove
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: main
+        id: reviewer
+        uses: ./ # TODO
+        with:
+          token: "${{secrets.BOT_SECRET}}"
+          labels: '["WFR"]'
+          reviewers: '["buildsville","oder-bot"]'
+      - name: output done
+        if: steps.reviewer.outputs.skipped == 'false'
+        run: |
+          echo "process done"
+          echo "type: ${{ steps.reviewer.outputs.type }}"
+          echo "url: ${{ steps.reviewer.outputs.url }}"
+      - name: output skipped
+        if: steps.reviewer.outputs.skipped == 'true'
+        run: |
+          echo "process skipped"
+          echo "type: ${{ steps.reviewer.outputs.type }}"
+          echo "url: ${{ steps.reviewer.outputs.url }}"
