@@ -56,11 +56,9 @@ jobs:
     runs-on: ubuntu-latest
     name: assign and remove
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
       - name: main
         id: reviewer
-        uses: ./ # TODO
+        uses: buildsville/assign-reviewer-by-label@v1
         with:
           token: "${{secrets.GITHUB_TOKEN}}"
           labels: '[ "WFR", "ASAP" ]'
@@ -77,5 +75,4 @@ jobs:
           echo "process skipped"
           echo "type: ${{ steps.reviewer.outputs.type }}"
           echo "url: ${{ steps.reviewer.outputs.url }}"
-
 ```
