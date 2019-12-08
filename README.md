@@ -15,14 +15,14 @@ Or set your personal access token.
 Labels as trigger when you want to assign reviewers.  
 If multiple settings, triggers when all labels applied.  
 When these labels removed, review request is cancelled.  
-You should set JSON string.  
+You should set JSON array string.  
 ex) `'[ "WFR", "ASAP" ]'`
 
 ### reviewers (required)
 
 Reviewers you want to assign.  
 If multiple settings, everyone is assigned.  
-You should set JSON string.  
+You should set JSON array string.  
 ex) `'[ "cat", "neko", "nyan" ]'`
 
 ## Outputs

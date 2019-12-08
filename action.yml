@@ -1,13 +1,25 @@
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'Assign reviewer by label'
+description: 'assign and remove reviewer when specified labels applied'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  token:
+    description: 'github token or personal access token'
     required: true
-    default: 'World'
+    default: ''
+  labels:
+    description: 'labels as trigger (JSON array)'
+    required: true
+    default: ''
+  reviewers:
+    description: 'reviewers (JSON array)'
+    required: true
+    default: ''
 outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+  type:
+    description: 'assign or remove'
+  skipped:
+    description: 'true or false'
+  url:
+    description: 'Pull repuest URL'
 runs:
   using: 'node12'
   main: 'index.js'
