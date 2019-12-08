@@ -62,9 +62,9 @@ jobs:
         id: reviewer
         uses: ./ # TODO
         with:
-          token: "${{secrets.BOT_SECRET}}"
-          labels: '["WFR"]'
-          reviewers: '["buildsville","oder-bot"]'
+          token: "${{secrets.GITHUB_TOKEN}}"
+          labels: '[ "WFR", "ASAP" ]'
+          reviewers: '[ "cat", "neko", "nyan" ]'
       - name: output done
         if: steps.reviewer.outputs.skipped == 'false'
         run: |
