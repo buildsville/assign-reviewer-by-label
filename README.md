@@ -1,7 +1,7 @@
 # Assign Reviewer by Labels
 
 This action assigns reviewers when the specified labels applied to pull request.  
-Also, review request is cancelled when the specified labels are removed.
+Also, review request is cancelled when the specified labels are not applied. (option)
 
 ## Inputs
 
@@ -24,6 +24,13 @@ Reviewers you want to assign.
 If multiple settings, everyone is assigned.  
 You should set JSON array string.  
 ex) `'[ "cat", "neko", "nyan" ]'`
+
+### remove-when-no-label (optional)
+
+Remove reviewers if specified labels are not applied.  
+Useful for absolutely sync reviewer and labels.  
+Note: Manually assigning reviewers and not apply specifiled label, reviewer will be removed.  
+default: 'false'
 
 ## Outputs
 
@@ -63,6 +70,7 @@ jobs:
           token: "${{secrets.GITHUB_TOKEN}}"
           labels: '[ "WFR", "ASAP" ]'
           reviewers: '[ "cat", "neko", "nyan" ]'
+          remove-when-no-label: 'true'
       - name: output done
         if: steps.reviewer.outputs.skipped == 'false'
         run: |

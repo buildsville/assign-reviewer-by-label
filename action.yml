@@ -7,15 +7,16 @@ inputs:
   token:
     description: 'github token or personal access token'
     required: true
-    default: ''
   labels:
     description: 'labels as trigger (JSON array)'
     required: true
-    default: ''
   reviewers:
     description: 'reviewers (JSON array)'
     required: true
-    default: ''
+  remove-when-no-label:
+    description: 'remove reviewers if specified labels not applied'
+    required: false
+    default: 'false'
 outputs:
   type:
     description: 'assign or remove'

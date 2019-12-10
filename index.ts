@@ -9,6 +9,7 @@ type Config = {
     token: string
     labels: Labels
     reviewers: Reviewers
+    remove: boolean
 }
 
 type OriginalLabel = {
@@ -25,6 +26,8 @@ type Result = {
     url: string
 }
 
+const defaultRemove:boolean = false
+
 const EmptyResult: Result = {
     type: "",
     skipped: true,
@@ -35,14 +38,20 @@ function getConfig():Config {
     let token: string = core.getInput('token')
     let labelString: string = core.getInput('labels')
     let reviewerString: string = core.getInput('reviewers')
+    let remove:boolean = toBoolean(core.getInput('remove-when-no-label')) || defaultRemove
     let label: Labels = JSON.parse(labelString) as Labels
     let reviewer: Reviewers = JSON.parse(reviewerString) as Reviewers
     let conf: Config = {
         token: token,
         labels: label,
-        reviewers: reviewer
+        reviewers: reviewer,
+        remove: remove
     }
     return conf
+}
+
+function toBoolean (bool: string) {
+    return bool.toLowerCase() === 'true';
 }
 
 function getLabels():Labels {
@@ -197,8 +206,12 @@ if ( assignable(conf.labels, labels) ) {
         setOutput(res)
     })
 } else {
-    const result:Promise<Result> = removeReviewers(conf)
-    result.then(function(res){
-        setOutput(res)
-    })
+    if ( conf.remove ) {
+        const result:Promise<Result> = removeReviewers(conf)
+        result.then(function(res){
+            setOutput(res)
+        })
+    } else {
+        setOutput(EmptyResult)
+    }
 }

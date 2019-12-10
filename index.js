@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var core = require("@actions/core");
 var github = require("@actions/github");
+var defaultRemove = false;
 var EmptyResult = {
     type: "",
     skipped: true,
@@ -47,14 +48,19 @@ function getConfig() {
     var token = core.getInput('token');
     var labelString = core.getInput('labels');
     var reviewerString = core.getInput('reviewers');
+    var remove = toBoolean(core.getInput('remove-when-no-label')) || defaultRemove;
     var label = JSON.parse(labelString);
     var reviewer = JSON.parse(reviewerString);
     var conf = {
         token: token,
         labels: label,
-        reviewers: reviewer
+        reviewers: reviewer,
+        remove: remove
     };
     return conf;
+}
+function toBoolean(bool) {
+    return bool.toLowerCase() === 'true';
 }
 function getLabels() {
     var pullRequest = github.context.payload.pull_request;
@@ -206,8 +212,13 @@ if (assignable(conf.labels, labels)) {
     });
 }
 else {
-    var result = removeReviewers(conf);
-    result.then(function (res) {
-        setOutput(res);
-    });
+    if (conf.remove) {
+        var result = removeReviewers(conf);
+        result.then(function (res) {
+            setOutput(res);
+        });
+    }
+    else {
+        setOutput(EmptyResult);
+    }
 }
