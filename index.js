@@ -73,6 +73,22 @@ function getLabels() {
         return labels_1;
     }
 }
+function getActionLabel() {
+    var payload = github.context.payload;
+    var action = payload.action;
+    if (action != "labeled") {
+        return "";
+    }
+    return payload.label.name;
+}
+function executable(needLabel, actionLabel) {
+    if (needLabel.indexOf(actionLabel) != -1) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 function assignable(needLabel, currentLabel) {
     var filterdLabel = needLabel.filter(function (label) { return currentLabel.indexOf(label) != -1; });
     if (filterdLabel.length == needLabel.length) {
@@ -205,7 +221,8 @@ function setOutput(result) {
 }
 var conf = getConfig();
 var labels = getLabels();
-if (assignable(conf.labels, labels)) {
+var actionLabel = getActionLabel();
+if (executable(conf.labels, actionLabel) && assignable(conf.labels, labels)) {
     var result = assginReviewers(conf);
     result.then(function (res) {
         setOutput(res);

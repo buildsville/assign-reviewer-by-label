@@ -67,6 +67,23 @@ function getLabels():Labels {
     }
 }
 
+function getActionLabel():string{
+    let payload = github.context.payload
+    let action = payload.action
+    if ( action != "labeled" ) {
+        return ""
+    }
+    return payload.label.name
+}
+
+function executable(needLabel:Labels,actionLabel:string):boolean {
+    if (needLabel.indexOf(actionLabel) != -1) {
+        return true
+    } else {
+        return false
+    }
+}
+
 function assignable(needLabel:Labels,currentLabel:Labels):boolean {
     let filterdLabel: Labels = needLabel.filter(
         label => currentLabel.indexOf(label) != -1
@@ -200,7 +217,8 @@ function setOutput(result:Result) {
 
 const conf = getConfig()
 const labels = getLabels()
-if ( assignable(conf.labels, labels) ) {
+const actionLabel = getActionLabel()
+if ( executable(conf.labels, actionLabel) && assignable(conf.labels, labels) ) {
     const result:Promise<Result> = assginReviewers(conf)
     result.then(function(res){
         setOutput(res)
