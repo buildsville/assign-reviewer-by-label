@@ -109,11 +109,11 @@ async function assginReviewers(conf: Config):Promise<Result> {
     let url = getHtmlUrl(payload)
 
     if (reviewers.length != 0) {
-        let client = new github.GitHub(conf.token)
+        let client = github.getOctokit(core.getInput('token'))
         let repoOwner = repository.owner.login
         let pullNumber = pullRequest.number
         let repo = repository.name
-        await client.pulls.createReviewRequest({
+        await client.rest.pulls.requestReviewers({
             owner: repoOwner,
             repo: repo,
             pull_number: pullNumber,
@@ -147,11 +147,11 @@ async function removeReviewers(conf: Config):Promise<Result> {
     let url = getHtmlUrl(payload)
 
     if ( currentReviewers.length != 0 ) {
-        let client = new github.GitHub(conf.token)
+        let client = github.getOctokit(conf.token)
         let owner = repository.owner.login
         let pullNumber = pullRequest.number
         let repo = repository.name
-        await client.pulls.deleteReviewRequest({
+        await client.rest.pulls.removeRequestedReviewers({
             owner: owner,
             pull_number: pullNumber,
             repo: repo,
