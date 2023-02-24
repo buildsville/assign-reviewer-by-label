@@ -81,8 +81,9 @@ function assginReviewers(conf) {
         }
         let currentReviewers = getCurrentReviewers(payload);
         let prOwner = pullRequest.user.login;
-        let filterdOwnerReviewers = filterOwner(conf.reviewers, prOwner);
-        let reviewers = filterExist(filterdOwnerReviewers, currentReviewers);
+        // let filterdOwnerReviewers:Reviewers = filterOwner(conf.reviewers, prOwner)
+        // let reviewers = filterExist(filterdOwnerReviewers, currentReviewers)
+        let reviewers = conf.reviewers;
         let url = getHtmlUrl(payload);
         if (reviewers.length != 0) {
             let client = github.getOctokit(core.getInput('token'));
